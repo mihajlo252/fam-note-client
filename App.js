@@ -1,60 +1,51 @@
-import { StatusBar } from "expo-status-bar";
-import {
-    Button,
-    NativeModules,
-    Platform,
-    SafeAreaView,
-    ScrollView,
-    StyleSheet,
-    Text,
-    View,
-} from "react-native";
-const { StatusBarManager } = NativeModules;
+// React / ReactNative
+import { useEffect, useState } from "react";
+import { Easing, StyleSheet, TouchableOpacity } from "react-native";
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+
+// Screen Stacks
+import { MainScreensStack } from "./src/ScreenStacks/MainScreensStack";
+import { SettingsScreenStack } from "./src/ScreenStacks/SettingsScreenStack";
+
 export default function App() {
+    const Stack = createNativeStackNavigator();
+
     return (
-        <SafeAreaView style={styles.container}>
-            <View style={styles.title}>
-                <Text style={styles.title_text}>FamNote</Text>
-            </View>
-            <ScrollView contentContainerStyle={styles.main}>
-                <Text style={styles.main_text}>FamNote</Text>
-                <Button title="Click" onPress={() => alert("FAMNOTE")} />
-            </ScrollView>
-        </SafeAreaView>
+        <>
+            <NavigationContainer>
+                <Stack.Navigator
+                    screenOptions={{
+                        headerStyle: styles.header,
+                        headerTitleStyle: styles.header_text,
+                        statusBarColor: "#333",
+                        animation: "fade_from_bottom",
+                    }}
+                >
+                    <Stack.Screen name="FamNote" component={MainScreensStack} />
+                    <Stack.Screen name="Settings" component={SettingsScreenStack} />
+                </Stack.Navigator>
+            </NavigationContainer>
+        </>
     );
 }
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        backgroundColor: "#333",
     },
-    title: {
+    header: {
         height: 64,
-        backgroundColor: "purple",
-        alignContent: "center",
-        justifyContent: "center",
-        paddingHorizontal: 16,
-        paddingTop: Platform.OS === "android" ? StatusBarManager.HEIGHT : 0,
+        backgroundColor: "#29669D",
+        // justifyContent: "center",
+        // alignItems: "center",
+        // paddingHorizontal: 16,
+        // paddingTop: Platform.OS === "android" ? StatusBarManager.HEIGHT : 0,
     },
-    title_text: {
+    header_text: {
+        width: "auto",
         color: "white",
         fontWeight: "bold",
-    },
-    main: {
-        flex: 1,
-        display: "flex",
-        flexDirection: "column",
-        gap: 20,
-        backgroundColor: "white",
-        justifyContent: "center",
-        alignItems: "center",
-    },
-    main_text: {
-        backgroundColor: "#f90",
-        color: "white",
-        fontSize: 20,
-        paddingHorizontal: 20,
-        paddingVertical: 10,
-        borderRadius: 100,
     },
 });
